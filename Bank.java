@@ -8,24 +8,20 @@ public class Bank {
 	}
 
 	public int addAccount(String holderName, long idNr) {
-		BankAccount a = new BankAccount(holderName, idNr);
-		if (findHolder(idNr) == null) {
-			AllAccounts.add(a);
-			return a.getAccountNumber();
-		}
-		BankAccount b = new BankAccount(findHolder(idNr));
-		AllAccounts.add(b);
-		return b.getAccountNumber();
-
+	    Customer holder = findHolder(idNr);
+	    BankAccount account = (holder == null) 
+	        ? new BankAccount(holderName, idNr) 
+	        : new BankAccount(holder);
+	    AllAccounts.add(account);
+	    return account.getAccountNumber();
 	}
 
 	public Customer findHolder(long idNr) {
-		for (int i = 0; i < AllAccounts.size(); i++) {
-			if (AllAccounts.get(i).getHolder().getIdNr() == idNr) {
-				return AllAccounts.get(i).getHolder();
-			}
-		}
-		return null;
+	    return AllAccounts.stream()
+	        .map(BankAccount::getHolder)
+	        .filter(holder -> holder.getIdNr() == idNr)
+	        .findFirst()
+	        .orElse(null);
 	}
 
 	public boolean removeAccount(int number) {
