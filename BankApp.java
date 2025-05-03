@@ -192,17 +192,5 @@ public class BankApp {
             }
         }
     }
-
-    private long getValidLong(String prompt) {
-        while (true) {
-            try {
-                System.out.println(prompt);
-                return scan.nextLong();
-            } catch (Exception e) {
-                System.out.println("Invalid input. Please enter a valid number.");
-                scan.nextLine(); // Clear invalid input
-            }
-        }
-    }
 }
 
