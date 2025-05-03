@@ -1,12 +1,13 @@
 public class Customer {
     private long idNr;
-    private static long customerNr = 0;
+    private long customerNr; // Changed to instance variable
     private String name;
+    private static long nextCustomerNr = 1; // Tracks the next available customer number
 
     public Customer(String name, long idNr) {
         this.name = name;
         this.idNr = idNr;
-        customerNr++;
+        this.customerNr = nextCustomerNr++; // Assign and increment
     }
 
     public String getName() {
@@ -17,8 +18,8 @@ public class Customer {
         return idNr;
     }
 
-    public int getCustomerNr() {
-        return (int) customerNr;
+    public long getCustomerNr() { // Changed return type to long
+        return customerNr;
     }
 
     @Override

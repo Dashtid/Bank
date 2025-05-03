@@ -29,7 +29,7 @@ public class BankApp {
     }
 
     private void menuSelection() {
-        int choice;
+        int choice = 0; // Initialize choice
         do {
             menu();
             choice = scan.nextInt();
@@ -66,20 +66,45 @@ public class BankApp {
     private void handleWithdraw() {
         System.out.println("Enter your account number");
         int accountNumber = scan.nextInt();
+        BankAccount account = Nordea.findByAccountNumber(accountNumber);
+        if (account == null) {
+            System.out.println("Account not found.");
+            return;
+        }
         System.out.println("Enter the amount you want to withdraw");
         int amount = scan.nextInt();
-        Nordea.findByAccountNumber(accountNumber).withdraw(amount);
+        try {
+            account.withdraw(amount);
+            System.out.println("Withdrawal successful.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void handleTransfer() {
         System.out.println("Enter your account number");
         int fromAccountNumber = scan.nextInt();
+        BankAccount fromAccount = Nordea.findByAccountNumber(fromAccountNumber);
+        if (fromAccount == null) {
+            System.out.println("Source account not found.");
+            return;
+        }
         System.out.println("Enter the account number you want to transfer to");
         int toAccountNumber = scan.nextInt();
+        BankAccount toAccount = Nordea.findByAccountNumber(toAccountNumber);
+        if (toAccount == null) {
+            System.out.println("Destination account not found.");
+            return;
+        }
         System.out.println("Enter the amount you want to transfer");
         int amount = scan.nextInt();
-        Nordea.findByAccountNumber(fromAccountNumber).withdraw(amount);
-        Nordea.findByAccountNumber(toAccountNumber).deposit(amount);
+        try {
+            fromAccount.withdraw(amount);
+            toAccount.deposit(amount);
+            System.out.println("Transfer successful.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void handleCreateAccount() {
@@ -137,26 +162,3 @@ public class BankApp {
     }
 }
 
-public ArrayList<BankAccount> getAllAccounts() {
-    AllAccounts.sort((a, b) -> a.getHolder().getName().compareToIgnoreCase(b.getHolder().getName()));
-    return AllAccounts;
-}
-
-@Test
-public void testDeposit() {
-    BankAccount account = new BankAccount("John Doe", 123456789L);
-    account.deposit(100.0);
-    assertEquals(100.0, account.getBalance(), 0.01);
-}
-
-public enum MenuOption {
-    FIND_ACCOUNTS_FOR_HOLDER,
-    FIND_BY_PART_OF_NAME,
-    DEPOSIT,
-    WITHDRAW,
-    TRANSFER,
-    CREATE_ACCOUNT,
-    REMOVE_ACCOUNT,
-    PRINT_ALL_ACCOUNTS,
-    EXIT
-}

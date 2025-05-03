@@ -19,7 +19,7 @@ public class Bank {
     public Customer findHolder(long idNr) {
         return AllAccounts.stream()
             .map(BankAccount::getHolder)
-            .filter(holder -> holder.getIdNr() == idNr)
+            .filter(holder -> holder != null && holder.getIdNr() == idNr) // Added null check
             .findFirst()
             .orElse(null);
     }
