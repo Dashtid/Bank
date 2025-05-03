@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BankApp {
-    Bank Nordea = new Bank();
+    Bank BankSystem = new Bank(); // Renamed from Nordea
     private Scanner scan = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -51,7 +51,7 @@ public class BankApp {
     private void handleFindAccountsForHolder() {
         System.out.println("Enter ID number");
         long id = scan.nextLong();
-        ArrayList<BankAccount> accounts = Nordea.findAccountsForHolder(id);
+        ArrayList<BankAccount> accounts = BankSystem.findAccountsForHolder(id);
         System.out.println(accounts);
     }
 
@@ -59,14 +59,14 @@ public class BankApp {
         System.out.println("Enter part of the name");
         String namePart = scan.next();
         namePart = namePart.trim();
-        ArrayList<Customer> customers = Nordea.findByPartofName(namePart);
+        ArrayList<Customer> customers = BankSystem.findByPartofName(namePart);
         System.out.println(customers);
     }
 
     private void handleWithdraw() {
         System.out.println("Enter your account number");
         int accountNumber = scan.nextInt();
-        BankAccount account = Nordea.findByAccountNumber(accountNumber);
+        BankAccount account = BankSystem.findByAccountNumber(accountNumber); // Renamed
         if (account == null) {
             System.out.println("Account not found.");
             return;
@@ -84,14 +84,14 @@ public class BankApp {
     private void handleTransfer() {
         System.out.println("Enter your account number");
         int fromAccountNumber = scan.nextInt();
-        BankAccount fromAccount = Nordea.findByAccountNumber(fromAccountNumber);
+        BankAccount fromAccount = BankSystem.findByAccountNumber(fromAccountNumber); // Renamed
         if (fromAccount == null) {
             System.out.println("Source account not found.");
             return;
         }
         System.out.println("Enter the account number you want to transfer to");
         int toAccountNumber = scan.nextInt();
-        BankAccount toAccount = Nordea.findByAccountNumber(toAccountNumber);
+        BankAccount toAccount = BankSystem.findByAccountNumber(toAccountNumber); // Renamed
         if (toAccount == null) {
             System.out.println("Destination account not found.");
             return;
@@ -113,13 +113,13 @@ public class BankApp {
         scan.nextLine();
         System.out.println("Enter your full name");
         String name = scan.nextLine();
-        Nordea.addAccount(name, userId);
+        BankSystem.addAccount(name, userId); // Renamed
     }
 
     private void handleRemoveAccount() {
         System.out.println("Enter your account number");
         int accountNumber = scan.nextInt();
-        if (Nordea.removeAccount(accountNumber)) {
+        if (BankSystem.removeAccount(accountNumber)) { // Renamed
             System.out.println("Account removed");
         } else {
             System.out.println("Account does not exist");
@@ -127,7 +127,7 @@ public class BankApp {
     }
 
     private void handlePrintAllAccounts() {
-        System.out.println(Nordea.getAllAccounts());
+        System.out.println(BankSystem.getAllAccounts()); // Renamed
     }
 
     private void handleDeposit() {
@@ -136,7 +136,7 @@ public class BankApp {
             int accountNumber = scan.nextInt();
             double amount = getPositiveAmount("Enter amount to deposit:");
 
-            BankAccount account = Nordea.findByAccountNumber(accountNumber);
+            BankAccount account = BankSystem.findByAccountNumber(accountNumber); // Renamed
             if (account != null) {
                 account.deposit(amount);
                 System.out.println("Deposit successful.");
@@ -159,6 +159,34 @@ public class BankApp {
             }
         } while (amount <= 0);
         return amount;
+    }
+
+    private int getValidInt(String prompt) {
+        while (true) {
+            try {
+                System.out.println(prompt);
+                return scan.nextInt();
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+                scan.nextLine(); // Clear invalid input
+            }
+        }
+    }
+
+    private long getValidLong(String prompt) {
+        while (true) {
+            try {
+                System.out.println(prompt);
+                return scan.nextLong();
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+                scan.nextLine(); // Clear invalid input
+
+
+
+
+}    }        }            }            }
+        }
     }
 }
 

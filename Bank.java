@@ -35,8 +35,9 @@ public class Bank {
     }
 
     public ArrayList<BankAccount> getAllAccounts() {
-        AllAccounts.sort((a, b) -> a.getHolder().getName().compareToIgnoreCase(b.getHolder().getName()));
-        return AllAccounts;
+        ArrayList<BankAccount> sortedAccounts = new ArrayList<>(AllAccounts); // Create a copy
+        sortedAccounts.sort((a, b) -> a.getHolder().getName().compareToIgnoreCase(b.getHolder().getName()));
+        return sortedAccounts;
     }
 
     public BankAccount findByAccountNumber(int accountNumber) {
