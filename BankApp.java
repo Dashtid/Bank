@@ -29,10 +29,10 @@ public class BankApp {
     }
 
     private void menuSelection() {
-        int choice = 0; // Initialize choice
+        int choice;
         do {
             menu();
-            choice = scan.nextInt();
+            choice = getValidInt("Enter your choice:");
             switch (choice) {
                 case 1 -> handleFindAccountsForHolder();
                 case 2 -> handleFindByPartOfName();
@@ -51,8 +51,15 @@ public class BankApp {
     private void handleFindAccountsForHolder() {
         System.out.println("Enter ID number");
         long id = scan.nextLong();
+        scan.nextLine(); // Consume the newline character
         ArrayList<BankAccount> accounts = BankSystem.findAccountsForHolder(id);
-        System.out.println(accounts);
+        if (accounts.isEmpty()) {
+            System.out.println("No accounts found for the given ID.");
+        } else {
+            for (BankAccount account : accounts) {
+                System.out.println(account);
+            }
+        }
     }
 
     private void handleFindByPartOfName() {
@@ -60,7 +67,13 @@ public class BankApp {
         String namePart = scan.next();
         namePart = namePart.trim();
         ArrayList<Customer> customers = BankSystem.findByPartofName(namePart);
-        System.out.println(customers);
+        if (customers.isEmpty()) {
+            System.out.println("No customers found with the given name part.");
+        } else {
+            for (Customer customer : customers) {
+                System.out.println(customer);
+            }
+        }
     }
 
     private void handleWithdraw() {
@@ -110,7 +123,7 @@ public class BankApp {
     private void handleCreateAccount() {
         System.out.println("Enter your personal ID number");
         long userId = scan.nextLong();
-        scan.nextLine();
+        scan.nextLine(); // Consume the newline character
         System.out.println("Enter your full name");
         String name = scan.nextLine();
         BankSystem.addAccount(name, userId); // Renamed
@@ -127,7 +140,14 @@ public class BankApp {
     }
 
     private void handlePrintAllAccounts() {
-        System.out.println(BankSystem.getAllAccounts()); // Renamed
+        ArrayList<BankAccount> accounts = BankSystem.getAllAccounts();
+        if (accounts.isEmpty()) {
+            System.out.println("No accounts found.");
+        } else {
+            for (BankAccount account : accounts) {
+                System.out.println(account);
+            }
+        }
     }
 
     private void handleDeposit() {
@@ -181,11 +201,7 @@ public class BankApp {
             } catch (Exception e) {
                 System.out.println("Invalid input. Please enter a valid number.");
                 scan.nextLine(); // Clear invalid input
-
-
-
-
-}    }        }            }            }
+            }
         }
     }
 }
